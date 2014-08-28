@@ -1,0 +1,9 @@
+# IDE
+.idea
+
+# vagrant
+Vagrantfile
+.vagrant
+
+# bower
+libs

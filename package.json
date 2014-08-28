@@ -1,0 +1,13 @@
+{
+	"name": "floorman",
+	"version": "0.1.0",
+	"description": "A poker tournament management application",
+	"author": "Dennis Kim <kim.junkoo@gmail.com>",
+	"main": "server.js",
+	"dependencies": {
+		"express": "~4.8.5",
+		"mongoose": "~3.8.15",
+		"body-parser": "~1.6.5",
+		"method-override": "~2.1.3"
+	}
+}
