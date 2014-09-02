@@ -1,22 +1,29 @@
 // handlers for /api/players
 
 var Player = require("../models/player");
+var PlayerHelper = require("../helpers/player-helper");
 
 var PlayerHandler = {
 	// POST create a player
 	createPlayer: function (req, res) {
 
-		var player = new Player();
+		var playerId = req.body.playerId || null;
+		var email = req.body.email || null;
+		var givenName = req.body.givenName || null;
+		var surname = req.body.surname || null;
 
-		player.givenName = req.body.givenName;
-		player.surname = req.body.surname;
-		player.email = req.body.email;
+		var playerHelper = new PlayerHelper();
 
-		player.save(function (err) {
-			if (err) res.send(err);
-
-			res.json({ message: "Player created!" });
-		});
+		playerHelper.createPlayer(playerId, email, givenName, surname).then(
+			function (player) {
+				console.log("Player " + playerId + " created");
+				res.status(201).json(player);
+			},
+			function (err) {
+				console.log("Error creating player " + playerId + ". Stack trace: " + err.stack);
+				res.status(400).json({ error: err.message });
+			}
+		);
 	},
 
 	// GET all players
@@ -30,40 +37,81 @@ var PlayerHandler = {
 
 	// GET a specific player by id
 	getPlayerById: function (req, res) {
-		Player.findById(req.params.player_id, function (err, player) {
-			if (err) res.send(err);
+		var playerId = req.params.player_id || null;
 
-			res.json(player);
-		});
+		var playerHelper = new PlayerHelper();
+
+		playerHelper.findPlayerById(playerId).then(
+			function (player) {
+				console.log(player);
+
+				if (player && player.active === true) {
+					console.log("Player " + playerId + " retrieved.");
+					res.status(200).json(player);
+				}
+				else {
+					console.log("Player not found.");
+					console.log("No such player ID " + playerId + "exists.");
+					res.status(404).json({ error: "No such player ID " + playerId + " exists."});
+				}
+			},
+			function (err) {
+				console.log("Error during player retrieval: " + playerId + ". Stack trace: " + err.stack);
+				res.status(500).json({ error: err.message });
+			}
+		)
 	},
 
 	// PUT update a specific player by id
 	updatePlayerById: function (req, res) {
-		// todo use update or findByIdAndUpdate
-		Player.findById(req.params.player_id, function (err, player) {
-			if (err) res.send(err);
 
-			player.givenName = req.body.givenName;
-			player.surname = req.body.surname;
-			player.email = req.body.email;
+		var playerId = req.params.player_id || null;
+		var updatedPlayer = req.body || null;
 
-			player.save(function (err) {
-				if (err) res.send(err);
+		updatedPlayer.playerId = playerId;
 
-				res.json({ message: "Player " + req.params.player_id + " updated!" });
-			});
-		});
+		var playerHelper = new PlayerHelper();
+
+		playerHelper.updatePlayer(updatedPlayer).then(
+			function (player) {
+				if (player) {
+					console.log("Player " + player.playerId + " updated.");
+					res.status(200).json(player);
+				}
+				else {
+					console.log("Could not update player " + player.playerId + ".");
+					res.status(404).json({ error: "No player " + player.playerId + " found." });
+				}
+			},
+			function (err) {
+				console.log("Error updating player " + player.playerId + ". Stack trace: " + err.stack);
+				res.status(500).json({ error: err.message });
+			}
+		);
 	},
 
 	// DELETE a specific player by id
 	deletePlayerById: function (req, res) {
-		Player.remove({
-			_id: req.params.player_id
-		}, function (err, player) {
-			if (err) res.send(err);
+		var playerId = req.params.playerId || null;
 
-			res.json({ message: "Deleted player " + req.params.player_id + "." });
-		});
+		var playerHelper = new PlayerHelper();
+
+		playerHelper.disablePlayer(playerId).then(
+			function (player) {
+				if (player) {
+					console.log("Player " + playerId + " disabled.");
+					res.status(204).json(null);
+				}
+				else {
+					console.log("Could not disable player " + playerId + ".");
+					res.status(404).json({ error: "No player found " + playerId + "." });
+				}
+			},
+			function (err) {
+				console.log("Error disabling player " + playerId + ". Stack trace: " + err.stack);
+				res.status(500).json({ error: err.message });
+			}
+		);
 	}
 };
 
