@@ -2,6 +2,7 @@
 
 var Player = require("../models/player");
 var PlayerHelper = require("../helpers/player-helper");
+var validator = require("validator");
 
 var PlayerHandler = {
 	// POST create a player
@@ -13,6 +14,13 @@ var PlayerHandler = {
 		var surname = req.body.surname || null;
 
 		var playerHelper = new PlayerHelper();
+
+		if (validator.isEmail(email)) {
+			email = validator.normalizeEmail(email);
+		}
+		else {
+			res.status(400).json({ error: "Email must be valid." });
+		}
 
 		playerHelper.createPlayer(playerId, email, givenName, surname).then(
 			function (player) {
@@ -68,6 +76,12 @@ var PlayerHandler = {
 		var playerId = req.params.player_id || null;
 		var updatedPlayer = req.body || null;
 
+		if (validator.isEmail(req.body.email)) {
+			updatedPlayer.email = validator.normalizeEmail(req.body.email);
+		}
+		else {
+			res.status(400).json({ error: "Email must be valid" });
+		}
 		updatedPlayer.playerId = playerId;
 
 		var playerHelper = new PlayerHelper();

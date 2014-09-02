@@ -18,4 +18,6 @@ PlayerSchema.methods.isActive = function () {
 	return this.active;
 };
 
+// todo move validation here
+
 module.exports = mongoose.model("Player", PlayerSchema);

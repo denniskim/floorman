@@ -9,9 +9,16 @@ var GameVariants = "HI HI_LO NA".split(" ");
 var WagerTypes = "NO_LIMIT POT_LIMIT LIMIT".split(" ");
 
 var GameSchema = new Schema({
-	gameType: { type: String, enum: GameTypes },
-	gameVariant: { type: String, enum: GameVariants },
-	wagerType: { type: String, enum: WagerTypes },
+	gameType: { type: String, enum: GameTypes, required: true },
+	gameVariant: { type: String, enum: GameVariants, required: true },
+	wagerType: { type: String, enum: WagerTypes, required: true },
+	date: { type: Date, required: true },
+	dateCreated: { type: Date, "default": Date.now },
+	players: {
+		signedUp: [String],
+		entered: [String],
+		eliminated: [String]
+	}
 });
 
 module.exports = mongoose.model("Game", GameSchema);
