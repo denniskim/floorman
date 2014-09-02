@@ -1,3 +1,3 @@
 module.exports = {
-	url: "mongodb://localhost/floorman-dev"
-}
+	url: "mongodb://localhost:27017/floorman-dev"
+};
