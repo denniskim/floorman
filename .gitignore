@@ -6,7 +6,7 @@ Vagrantfile
 .vagrant
 
 # bower
-libs
+public/libs
 
 # npm
 node_modules
