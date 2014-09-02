@@ -1,12 +1,10 @@
-module.exports = function (app, express) {
+module.exports = function (app, router) {
 
-	var router = express.Router();
+	var playerHandler = require("./handlers/player-handler");
 
 	/**
 	 * API routes
 	 */
-
-	var Player = require("./models/player");
 
 	// global router
 	router.use(function (req, res, next) {
@@ -21,63 +19,17 @@ module.exports = function (app, express) {
 
 	router.route("/players")
 		// create a player
-		.post(function (req, res) {
-
-			var player = new Player();
-
-			player.givenName = req.body.givenName;
-			player.surname = req.body.surname;
-
-			player.save(function (err) {
-				if (err) res.send(err);
-
-				res.json({ message: "Player created!" });
-			});
-		})
+		.post(playerHandler.createPlayer)
 		// get all players
-		.get(function (req, res) {
-			Player.find(function (err, players) {
-				if (err) res.send(err);
-
-				res.json(players);
-			});
-		});
+		.get(playerHandler.getAllPlayers);
 	// route("/players")
 
 	router.route("/players/:player_id")
-		.get(function (req, res) {
-			Player.findById(req.params.player_id, function (err, player) {
-				if (err) res.send(err);
+		.get(playerHandler.getPlayerById)
 
-				res.json(player);
-			});
-		})
+		.put(playerHandler.updatePlayerById)
 
-		.put(function (req, res) {
-			// todo use update or findByIdAndUpdate
-			Player.findById(req.params.player_id, function (err, player) {
-				if (err) res.send(err);
-
-				player.givenName = req.body.givenName;
-				player.surname = req.body.surname;
-
-				player.save(function (err) {
-					if (err) res.send(err);
-
-					res.json({ message: "Player " + req.params.player_id + " updated!" });
-				});
-			});
-		})
-
-		.delete(function (req, res) {
-			Player.remove({
-				_id: req.params.player_id
-			}, function (err, player) {
-				if (err) res.send(err);
-
-				res.json({ message: "Deleted player " + req.params.player_id + "." });
-			});
-		});
+		.delete(playerHandler.deletePlayerById);
 
 	app.use("/api", router);
 
