@@ -6,11 +6,11 @@ var bodyParser = require("body-parser");
 var methodOverride = require("method-override");
 
 // config
-var dbConf = require("./config/db");
+var config = require("./config/dev");
 
 var port = process.env.PORT || 8080;
 
-mongoose.connect(dbConf.url);
+mongoose.connect(config.db.url);
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "Connection error:"));
 
