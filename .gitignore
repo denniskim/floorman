@@ -7,3 +7,6 @@ Vagrantfile
 
 # bower
 libs
+
+# npm
+node_modules
