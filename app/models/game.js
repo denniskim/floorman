@@ -9,6 +9,8 @@ var GameVariants = "HI HI_LO NA".split(" ");
 var WagerTypes = "NO_LIMIT POT_LIMIT LIMIT".split(" ");
 
 var GameSchema = new Schema({
+	// legacy field for importing old data
+	gameNumber: {type: Number, unique: true },
 	gameType: { type: String, enum: GameTypes, required: true },
 	gameVariant: { type: String, enum: GameVariants, required: true },
 	wagerType: { type: String, enum: WagerTypes, required: true },

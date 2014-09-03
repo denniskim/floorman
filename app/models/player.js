@@ -2,10 +2,15 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var PlayerSchema = new Schema({
-	playerId: {type: String, index: { unique: true }, required: true },
+	playerId: {
+		type: String,
+		index: { unique: true },
+		required: true,
+		match: /\w+/
+	},
 	email: { type: String, required: true },
-	givenName: { type: String, required: true },
-	surname: { type: String, required: true },
+	givenName: { type: String, required: true, match: /\w+/ },
+	surname: { type: String, required: true, match: /\w+/ },
 	creationDate: { type: Date, "default": Date.now },
 	active: { type: Boolean, "default": true }
 });

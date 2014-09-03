@@ -1,6 +1,7 @@
 module.exports = function (app, router) {
 
 	var playerHandler = require("./handlers/player-handler");
+	var gameHandler = require("./handlers/game-handler");
 
 	/**
 	 * API routes
@@ -22,7 +23,6 @@ module.exports = function (app, router) {
 		.post(playerHandler.createPlayer)
 		// get all players
 		.get(playerHandler.getAllPlayers);
-	// route("/players")
 
 	router.route("/players/:player_id")
 		.get(playerHandler.getPlayerById)
@@ -30,6 +30,10 @@ module.exports = function (app, router) {
 		.put(playerHandler.updatePlayerById)
 
 		.delete(playerHandler.deletePlayerById);
+
+	router.route("/games")
+		// create a game
+		.post(gameHandler.createGame);
 
 	app.use("/api", router);
 
