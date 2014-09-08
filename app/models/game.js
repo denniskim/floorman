@@ -1,4 +1,6 @@
 var mongoose = require("mongoose");
+var uniqueValidator = require("mongoose-unique-validator");
+
 var Schema = mongoose.Schema;
 
 // enums
@@ -22,5 +24,7 @@ var GameSchema = new Schema({
 		eliminated: [String]
 	}
 });
+
+GameSchema.plugin(uniqueValidator);
 
 module.exports = mongoose.model("Game", GameSchema);

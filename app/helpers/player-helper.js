@@ -46,9 +46,23 @@ var PlayerHelper = function PlayerHelper() {
 	this.updatePlayer = function updatePlayer(player) {
 		var deferred = Q.defer();
 
+		var updateObj = {};
+
+		if (typeof player.email === "string") {
+			updateObj["email"] = player.email;
+		}
+		if (typeof player.givenName === "string") {
+			updateObj["givenName"] = player.givenName;
+		}
+		if (typeof player.surname === "string") {
+			updateObj["surname"] = player.surname;
+		}
+
 		Player.findOneAndUpdate({
 			playerId: player.playerId
-		}, {
+		},
+		updateObj,
+		{
 			"new": true
 		},
 		function (err, player) {

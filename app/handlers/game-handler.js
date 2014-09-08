@@ -26,6 +26,16 @@ var GameHandler = {
 			}
 		);
 	}
+
+	// PUT update game
+
+	// GET get all games
+
+	// GET find a game
+
+	// PUT add players to game
+
+	//
 };
 
 module.exports = GameHandler;

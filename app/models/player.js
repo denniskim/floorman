@@ -1,4 +1,6 @@
 var mongoose = require("mongoose");
+var uniqueValidator = require("mongoose-unique-validator");
+
 var Schema = mongoose.Schema;
 
 var PlayerSchema = new Schema({
@@ -22,6 +24,8 @@ PlayerSchema.methods.getFullName = function () {
 PlayerSchema.methods.isActive = function () {
 	return this.active;
 };
+
+PlayerSchema.plugin(uniqueValidator);
 
 // todo move validation here
 
