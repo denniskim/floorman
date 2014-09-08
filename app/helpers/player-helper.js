@@ -58,21 +58,19 @@ var PlayerHelper = function PlayerHelper() {
 			updateObj["surname"] = player.surname;
 		}
 
-		Player.findOneAndUpdate({
-			playerId: player.playerId
-		},
-		updateObj,
-		{
-			"new": true
-		},
-		function (err, player) {
-			if (err) {
-				deferred.reject(new Error(err));
+		Player.findOneAndUpdate(
+			{ playerId: player.playerId },
+			updateObj,
+			{ "new": true },
+			function (err, player) {
+				if (err) {
+					deferred.reject(new Error(err));
+				}
+				else {
+					deferred.resolve(player);
+				}
 			}
-			else {
-				deferred.resolve(player);
-			}
-		});
+		);
 
 		return deferred.promise;
 	};

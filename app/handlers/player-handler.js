@@ -51,7 +51,6 @@ var PlayerHandler = {
 
 		playerHelper.findPlayerById(playerId).then(
 			function (player) {
-				console.log(player);
 
 				if (player && player.active === true) {
 					console.log("Player " + playerId + " retrieved.");
@@ -59,7 +58,7 @@ var PlayerHandler = {
 				}
 				else {
 					console.log("Player not found.");
-					console.log("No such player ID " + playerId + "exists.");
+					console.log("No such player ID " + playerId + " exists.");
 					res.status(404).json({ error: "No such player ID " + playerId + " exists."});
 				}
 			},
